@@ -13,27 +13,30 @@ import rx.subjects.PublishSubject;
 // - yes! we do care about correctness
 // - how is the summary calculation going? I think it might take into account the time of incorrect
 // responses but not the number
-// - shortly show a "correct" / "incorrect" label between challenges
 // - add text to summary view
 
 class StroopTest {
     private final StroopTestUI ui;
     private final StroopTestStats stats;
     private final RandomColor randomColor;
-    private final PublishSubject<Boolean> congruentSubject = PublishSubject.create();
+    private final PublishSubject<Boolean> trialResultSubject = PublishSubject.create();
+
     private Label currentLabel;
 
     StroopTest(StroopTestUI ui, RandomColor randomColor) {
         this.randomColor = randomColor;
         this.ui = ui;
-        this.stats = new StroopTestStats(SystemTime.get(), congruentSubject);
+        this.stats = new StroopTestStats(SystemTime.get(), trialResultSubject);
         ui.getClicks().subscribe(clickedColor -> {
-            congruentSubject.onNext(currentLabel.isCongruent());
+            boolean congruent = currentLabel.isCongruent();
+            trialResultSubject.onNext(congruent);
             if (stats.enough()) {
                 ui.end(stats.toString());
             } else {
-                ui.correct(currentLabel.hasColor(clickedColor));
+                boolean correct = currentLabel.hasColor(clickedColor);
+                ui.correct(correct);
                 currentLabel = makeLabel();
+                // TODO - move delay functionality to Rx util class
                 Observable
                         .just(0)
                         .subscribeOn(Schedulers.immediate())
