@@ -15,9 +15,12 @@ class StroopTest {
         this.stats = new StroopTestStats(SystemTime.get(), congruentSubject);
         ui.getClicks().subscribe(clickedColor -> {
             congruentSubject.onNext(currentLabel.isCongruent());
-            if (stats.enough())
-            currentLabel = makeLabel();
-            ui.showLabel(currentLabel);
+            if (stats.enough()) {
+                ui.end(stats.toString());
+            } else {
+                currentLabel = makeLabel();
+                ui.showLabel(currentLabel);
+            }
         });
     }
 

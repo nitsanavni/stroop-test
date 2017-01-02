@@ -38,7 +38,13 @@ class StroopTestStats {
     }
 
     boolean enough() {
-        return congruents.size() >= ENOUGH && incongruents.size() >= ENOUGH;
+        return congruents.size() >= ENOUGH &&
+                incongruents.size() >= ENOUGH;
+    }
+
+    @Override
+    public String toString() {
+        return "stats:\ncongruent: " + congruents.toString() + "\nincongruent: " + incongruents.toString();
     }
 
     static class Result {
@@ -67,6 +73,11 @@ class StroopTestStats {
 
         int avgTime() {
             return avgTime;
+        }
+
+        @Override
+        public String toString() {
+            return "" + num + ", " + ((float) avgTime) / 1000;
         }
     }
 

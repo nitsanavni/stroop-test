@@ -6,10 +6,75 @@
     tools:context="com.nitsan.strooptest.MainActivity">
 
 
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/initial_explanation_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="100dp" />
+
+    <LinearLayout
+        android:id="@+id/colorButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/blackButton"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="colorButtonClick"
+            android:text="שחור" />
+
+        <Button
+            android:id="@+id/blueButton"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="colorButtonClick"
+            android:text="כחול" />
+
+        <Button
+            android:id="@+id/redButton"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="colorButtonClick"
+            android:text="אדום" />
+
+        <Button
+            android:id="@+id/greenButton"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="colorButtonClick"
+            android:text="ירוק" />
+
+        <Button
+            android:id="@+id/yellowButton"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="colorButtonClick"
+            android:text="צהוב" />
+
+    </LinearLayout>
 
 </RelativeLayout>
