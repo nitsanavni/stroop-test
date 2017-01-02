@@ -63,7 +63,7 @@ public class StroopTestStatsTest {
     public void whenIsEnough() {
         PublishSubject<Boolean> clicks = PublishSubject.create();
         StroopTestStats stats = new StroopTestStats(mock(TimeSource.class), clicks);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 6; i++) {
             assertThat(stats.enough()).isFalse();
             clicks.onNext(true);
             clicks.onNext(false);

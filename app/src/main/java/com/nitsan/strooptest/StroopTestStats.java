@@ -8,22 +8,25 @@ import rx.Observable;
 // TODO - do we care about correctness?
 class StroopTestStats {
 
-    private static final int ENOUGH = 10;
+    private static final int ENOUGH = 6;
 
     private long prevTime = 0L;
     private List<Integer> congruents;
     private List<Integer> incongruents;
 
+    // TODO - instead of Boolean - change to TrialResult (isCongruent?, isCorrect?)
     StroopTestStats(TimeSource time, Observable<Boolean> clicks) {
         congruents = new ArrayList<>();
         incongruents = new ArrayList<>();
+        // TODO - first timestamp should not be here - should only be after starting the test
         prevTime = time.get();
         clicks.subscribe(congruent -> {
             long current = time.get();
+            int trialTime = (int) (current - prevTime);
             if (congruent) {
-                congruents.add((int) (current - prevTime));
+                congruents.add(trialTime);
             } else {
-                incongruents.add((int) (current - prevTime));
+                incongruents.add(trialTime);
             }
             prevTime = current;
         });
@@ -44,7 +47,7 @@ class StroopTestStats {
 
     @Override
     public String toString() {
-        return "stats:\ncongruent: " + congruents.toString() + "\nincongruent: " + incongruents.toString();
+        return "stats:\ncongruent: " + congruent().toString() + "\nincongruent: " + incongruent().toString();
     }
 
     static class Result {

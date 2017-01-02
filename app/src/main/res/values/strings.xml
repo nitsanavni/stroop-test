@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Stroop Test</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="summary">Most people respond faster and more accurately to the congruent trials...</string>
+    <string name="correct">correct</string>
+    <string name="incorrect">incorrect</string>
+    <string name="black">black</string>
+    <string name="blue">blue</string>
+    <string name="yellow">yellow</string>
+    <string name="green">green</string>
+    <string name="red">red</string>
+    <string name="trial_instruction">Click the button that matches the color of this word:</string>
 </resources>
