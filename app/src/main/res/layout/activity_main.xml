@@ -12,6 +12,12 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/intro_explanation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intro_explanation" />
+
     <Button
         android:id="@+id/initial_explanation_button"
         android:layout_width="wrap_content"

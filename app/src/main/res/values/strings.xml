@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Stroop Test</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="intro_explanation">In this task, you will be presented with a series of color words (black, blue, yellow, green, red)...</string>
     <string name="summary">Most people respond faster and more accurately to the congruent trials...</string>
     <string name="correct">correct</string>
     <string name="incorrect">incorrect</string>

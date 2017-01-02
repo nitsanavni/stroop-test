@@ -48,6 +48,8 @@ public class MainActivity extends Activity implements UI, StroopTestUI {
 
     @Override
     public Observable<Object> test() {
+        findViewById(R.id.initial_explanation_button).setVisibility(View.GONE);
+        findViewById(R.id.intro_explanation).setVisibility(View.GONE);
         test.start();
         testSubject = PublishSubject.create();
         return testSubject;
@@ -66,7 +68,6 @@ public class MainActivity extends Activity implements UI, StroopTestUI {
         findViewById(R.id.trial_instructions).setVisibility(View.VISIBLE);
         findViewById(R.id.label).setVisibility(View.VISIBLE);
         findViewById(R.id.mini_celebration).setVisibility(View.GONE);
-        findViewById(R.id.initial_explanation_button).setVisibility(View.GONE);
         findViewById(R.id.colorButtons).setVisibility(View.VISIBLE);
         TextView labelTV = (TextView) findViewById(R.id.label);
         labelTV.setText(label.text());
