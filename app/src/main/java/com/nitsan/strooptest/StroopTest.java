@@ -1,5 +1,10 @@
 package com.nitsan.strooptest;
 
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
 // TODOs
@@ -27,8 +32,14 @@ class StroopTest {
             if (stats.enough()) {
                 ui.end(stats.toString());
             } else {
+                ui.correct(currentLabel.hasColor(clickedColor));
                 currentLabel = makeLabel();
-                ui.showLabel(currentLabel);
+                Observable
+                        .just(0)
+                        .subscribeOn(Schedulers.immediate())
+                        .delay(300, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(i -> ui.showLabel(currentLabel));
             }
         });
     }

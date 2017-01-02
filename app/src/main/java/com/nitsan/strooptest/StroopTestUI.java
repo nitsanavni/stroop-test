@@ -8,4 +8,6 @@ interface StroopTestUI {
     Observable<Color> getClicks();
 
     void end(String stats);
+
+    void correct(boolean correct);
 }

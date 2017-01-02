@@ -10,4 +10,5 @@
     <string name="green">green</string>
     <string name="red">red</string>
     <string name="trial_instruction">Click the button that matches the color of this word:</string>
+    <string name="start_test_button">Start</string>
 </resources>
