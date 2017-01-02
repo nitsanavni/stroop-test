@@ -59,5 +59,16 @@ public class StroopTestStatsTest {
         assertThat(stats.incongruent().avgTime()).isEqualTo(5);
     }
 
+    @Test
+    public void whenIsEnough() {
+        PublishSubject<Boolean> clicks = PublishSubject.create();
+        StroopTestStats stats = new StroopTestStats(mock(TimeSource.class), clicks);
+        for (int i = 0; i < 10; i++) {
+            assertThat(stats.enough()).isFalse();
+            clicks.onNext(true);
+            clicks.onNext(false);
+        }
+        assertThat(stats.enough()).isTrue();
+    }
 
 }

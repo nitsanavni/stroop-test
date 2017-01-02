@@ -15,6 +15,7 @@ class StroopTest {
         this.stats = new StroopTestStats(SystemTime.get(), congruentSubject);
         ui.getClicks().subscribe(clickedColor -> {
             congruentSubject.onNext(currentLabel.isCongruent());
+            if (stats.enough())
             currentLabel = makeLabel();
             ui.showLabel(currentLabel);
         });

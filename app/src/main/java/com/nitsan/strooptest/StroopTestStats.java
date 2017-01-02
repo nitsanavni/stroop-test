@@ -8,6 +8,8 @@ import rx.Observable;
 // TODO - do we care about correctness?
 class StroopTestStats {
 
+    private static final int ENOUGH = 10;
+
     private long prevTime = 0L;
     private List<Integer> congruents;
     private List<Integer> incongruents;
@@ -33,6 +35,10 @@ class StroopTestStats {
 
     Result incongruent() {
         return new Result(incongruents);
+    }
+
+    boolean enough() {
+        return congruents.size() >= ENOUGH && incongruents.size() >= ENOUGH;
     }
 
     static class Result {
