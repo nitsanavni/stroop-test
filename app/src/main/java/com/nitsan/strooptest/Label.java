@@ -1,11 +1,26 @@
 package com.nitsan.strooptest;
 
-final class Label {
-    final int text;
-    final int color;
+import android.support.annotation.ColorInt;
 
-    Label(int text, int color) {
-        this.text = text;
-        this.color = color;
+final class Label {
+    private final Color text;
+    private final Color color;
+
+    Label(RandomColor randomColor) {
+        this.text = randomColor.next();
+        this.color = randomColor.next();
+    }
+
+    String text() {
+        return text.text();
+    }
+
+    @ColorInt
+    int color() {
+        return color.color();
+    }
+
+    boolean isCongruent() {
+        return text.equals(color);
     }
 }

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.Random;
+
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -14,12 +16,13 @@ public class MainActivity extends Activity implements UI, StroopTestUI {
     private PublishSubject<Object> initialExplanationSubject;
     private View initialExplanationButton;
     private PublishSubject<Object> testSubject;
+    private PublishSubject<Color> colorClicksSubject = PublishSubject.create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         flow = new AppFlow(this);
-        test = new StroopTest(this);
+        test = new StroopTest(this, new RandomColor(new Random()));
         setContentView(R.layout.activity_main);
         initialExplanationButton = findViewById(R.id.initial_explanation_button);
     }
@@ -55,5 +58,10 @@ public class MainActivity extends Activity implements UI, StroopTestUI {
     @Override
     public void showLabel(Label label) {
 
+    }
+
+    @Override
+    public Observable<Color> getClicks() {
+        return colorClicksSubject;
     }
 }
