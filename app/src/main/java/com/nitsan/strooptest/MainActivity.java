@@ -64,7 +64,6 @@ public class MainActivity extends Activity implements UI, StroopTestUI {
 
     @Override
     public void showLabel(Label label) {
-        // TODO - move these visibility stuff to a "start test" method
         findViewById(R.id.trial_instructions).setVisibility(View.VISIBLE);
         findViewById(R.id.label).setVisibility(View.VISIBLE);
         findViewById(R.id.mini_celebration).setVisibility(View.GONE);

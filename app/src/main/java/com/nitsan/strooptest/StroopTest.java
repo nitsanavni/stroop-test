@@ -14,6 +14,9 @@ import rx.subjects.PublishSubject;
 // - how is the summary calculation going? I think it might take into account the time of incorrect
 // responses but not the number
 // - add text to summary view
+// - add a "Trial" class - has a Label (congruent or not), start/end time, clicked color, is correct/incorrect
+// - Labels randomization distribution - uniform?
+// - use "view source" on online example (Adobe flash player)
 
 class StroopTest {
     private final StroopTestUI ui;
@@ -30,16 +33,17 @@ class StroopTest {
         ui.getClicks().subscribe(clickedColor -> {
             boolean congruent = currentLabel.isCongruent();
             trialResultSubject.onNext(congruent);
+            boolean correct = currentLabel.hasColor(clickedColor);
+            ui.correct(correct);
             if (stats.enough()) {
                 ui.end(stats.toString());
             } else {
-                boolean correct = currentLabel.hasColor(clickedColor);
-                ui.correct(correct);
                 currentLabel = makeLabel();
                 // TODO - move delay functionality to Rx util class
                 Observable
                         .just(0)
                         .subscribeOn(Schedulers.immediate())
+                        // TODO - subtract this delay from the stats / move timing into "Trial" class having start time and end time
                         .delay(300, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(i -> ui.showLabel(currentLabel));
@@ -52,6 +56,7 @@ class StroopTest {
         ui.showLabel(currentLabel);
     }
 
+    // TODO - should be "makeTrial"
     private Label makeLabel() {
         return new Label(randomColor);
     }
