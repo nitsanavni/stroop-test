@@ -5,7 +5,7 @@ import rx.Observable;
 interface UI {
     Observable<Object> initialExplanation();
 
-    Observable<Object> test();
+    void test();
 
     void summary();
 }

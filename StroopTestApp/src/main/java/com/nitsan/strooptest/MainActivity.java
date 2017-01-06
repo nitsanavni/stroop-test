@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import rx.Observable;
@@ -13,7 +15,6 @@ import rx.subjects.PublishSubject;
 public class MainActivity extends Activity implements UI, StroopTestFlowUI {
 
     private AppFlow flow;
-    private StroopTestFlow test;
     private PublishSubject<Object> initialExplanationSubject;
     private View initialExplanationButton;
     private PublishSubject<Object> testSubject;
@@ -22,8 +23,10 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        flow = new AppFlow(this);
-        test = new StroopTestFlow(this, new RandomColor(new Random()), new StroopTestStats(SystemTime.get()));
+        StroopTestFlow test = new StroopTestFlow(this, new RandomColor(new Random()), new StroopTestStats(SystemTime.get()));
+        List<StroopTestFlow> flows = new ArrayList<>(1);
+        flows.add(test);
+        flow = new AppFlow(this, flows);
         setContentView(R.layout.activity_main);
         initialExplanationButton = findViewById(R.id.initial_explanation_button);
     }
@@ -47,12 +50,9 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     }
 
     @Override
-    public Observable<Object> test() {
+    public void test() {
         findViewById(R.id.initial_explanation_button).setVisibility(View.GONE);
         findViewById(R.id.intro_explanation).setVisibility(View.GONE);
-        test.start();
-        testSubject = PublishSubject.create();
-        return testSubject;
     }
 
     @Override
@@ -80,7 +80,6 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
 
     @Override
     public void end(String stats) {
-        testSubject.onNext(new Object());
         findViewById(R.id.colorButtons).setVisibility(View.GONE);
         TextView summary = (TextView) findViewById(R.id.summary);
         summary.setVisibility(View.VISIBLE);

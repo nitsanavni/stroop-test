@@ -40,6 +40,7 @@ class StroopTestFlow {
     private final PublishSubject<Boolean> trialResultSubject = PublishSubject.create();
 
     private Label currentLabel;
+    private PublishSubject<Object> endSubject;
 
     StroopTestFlow(StroopTestFlowUI ui, RandomColor randomColor, StroopTestStats stats) {
         this.randomColor = randomColor;
@@ -52,7 +53,7 @@ class StroopTestFlow {
             boolean correct = currentLabel.hasColor(clickedColor);
             ui.correct(correct);
             if (this.stats.enough()) {
-                ui.end(this.stats.toString());
+                endSubject.onNext(new Object());
             } else {
                 currentLabel = makeLabel();
                 // TODO - move delay functionality to Rx util class
@@ -67,9 +68,11 @@ class StroopTestFlow {
         });
     }
 
-    void start() {
+    Observable<Object> start() {
         currentLabel = makeLabel();
         ui.showLabel(currentLabel);
+        endSubject = PublishSubject.create();
+        return endSubject;
     }
 
     // TODO - should be "makeTrial"
