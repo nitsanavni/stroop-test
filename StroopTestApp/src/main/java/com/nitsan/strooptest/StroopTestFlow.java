@@ -30,6 +30,8 @@ import rx.subjects.PublishSubject;
 // - TestSpecifics: correctness criterion, instruction text, Label type,
 // - maybe a test could ask the UI to show its explanation...
 // - measure test time directly (not through individual trials)
+// - landscape support?
+// - integrate Hebrew texts
 
 class StroopTestFlow {
     private final StroopTestFlowUI ui;
