@@ -2,7 +2,7 @@ package com.nitsan.strooptest;
 
 import rx.Observable;
 
-interface StroopTestUI {
+interface StroopTestFlowUI {
     void showLabel(Label label);
 
     Observable<Color> getClicks();

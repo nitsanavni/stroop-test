@@ -31,25 +31,26 @@ import rx.subjects.PublishSubject;
 // - maybe a test could ask the UI to show its explanation...
 // - measure test time directly (not through individual trials)
 
-class StroopTest {
-    private final StroopTestUI ui;
+class StroopTestFlow {
+    private final StroopTestFlowUI ui;
     private final StroopTestStats stats;
     private final RandomColor randomColor;
     private final PublishSubject<Boolean> trialResultSubject = PublishSubject.create();
 
     private Label currentLabel;
 
-    StroopTest(StroopTestUI ui, RandomColor randomColor) {
+    StroopTestFlow(StroopTestFlowUI ui, RandomColor randomColor, StroopTestStats stats) {
         this.randomColor = randomColor;
         this.ui = ui;
-        this.stats = new StroopTestStats(SystemTime.get(), trialResultSubject);
+        this.stats = stats;
+        stats.setClicks(trialResultSubject);
         ui.getClicks().subscribe(clickedColor -> {
             boolean congruent = currentLabel.isCongruent();
             trialResultSubject.onNext(congruent);
             boolean correct = currentLabel.hasColor(clickedColor);
             ui.correct(correct);
-            if (stats.enough()) {
-                ui.end(stats.toString());
+            if (this.stats.enough()) {
+                ui.end(this.stats.toString());
             } else {
                 currentLabel = makeLabel();
                 // TODO - move delay functionality to Rx util class
@@ -57,7 +58,7 @@ class StroopTest {
                         .just(0)
                         .subscribeOn(Schedulers.immediate())
                         // TODO - subtract this delay from the stats / move timing into "Trial" class having start time and end time
-                        .delay(300, TimeUnit.MILLISECONDS)
+                        .delay(300, TimeUnit.MILLISECONDS, Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(i -> ui.showLabel(currentLabel));
             }

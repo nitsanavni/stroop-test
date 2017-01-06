@@ -15,8 +15,9 @@ public class StroopTestStatsTest {
     public void shouldStatSingleChallenge() {
         TimeSource time = mock(TimeSource.class);
         when(time.get()).thenReturn(30L).thenReturn(50L);
+        StroopTestStats stats = new StroopTestStats(time);
         PublishSubject<Boolean> clicks = PublishSubject.create();
-        StroopTestStats stats = new StroopTestStats(time, clicks);
+        stats.setClicks(clicks);
         clicks.onNext(true);
         assertThat(stats.congruent().num()).isEqualTo(1);
         assertThat(stats.congruent().avgTime()).isEqualTo(20);
@@ -26,8 +27,9 @@ public class StroopTestStatsTest {
     public void shouldStatDifferentSingleCongruentChallenge() {
         TimeSource time = mock(TimeSource.class);
         when(time.get()).thenReturn(35L).thenReturn(50L);
+        StroopTestStats stats = new StroopTestStats(time);
         PublishSubject<Boolean> clicks = PublishSubject.create();
-        StroopTestStats stats = new StroopTestStats(time, clicks);
+        stats.setClicks(clicks);
         clicks.onNext(true);
         assertThat(stats.congruent().num()).isEqualTo(1);
         assertThat(stats.congruent().avgTime()).isEqualTo(15);
@@ -37,8 +39,9 @@ public class StroopTestStatsTest {
     public void shouldStatTwoCongruents() {
         TimeSource time = mock(TimeSource.class);
         when(time.get()).thenReturn(35L).thenReturn(50L).thenReturn(55L);
+        StroopTestStats stats = new StroopTestStats(time);
         PublishSubject<Boolean> clicks = PublishSubject.create();
-        StroopTestStats stats = new StroopTestStats(time, clicks);
+        stats.setClicks(clicks);
         clicks.onNext(true);
         clicks.onNext(true);
         assertThat(stats.congruent().num()).isEqualTo(2);
@@ -49,8 +52,9 @@ public class StroopTestStatsTest {
     public void shouldStatIncongruents() {
         TimeSource time = mock(TimeSource.class);
         when(time.get()).thenReturn(35L).thenReturn(50L).thenReturn(55L);
+        StroopTestStats stats = new StroopTestStats(time);
         PublishSubject<Boolean> clicks = PublishSubject.create();
-        StroopTestStats stats = new StroopTestStats(time, clicks);
+        stats.setClicks(clicks);
         clicks.onNext(true);
         assertThat(stats.incongruent().num()).isEqualTo(0);
         assertThat(stats.incongruent().avgTime()).isEqualTo(0);
@@ -61,8 +65,9 @@ public class StroopTestStatsTest {
 
     @Test
     public void whenIsEnough() {
+        StroopTestStats stats = new StroopTestStats(mock(TimeSource.class));
         PublishSubject<Boolean> clicks = PublishSubject.create();
-        StroopTestStats stats = new StroopTestStats(mock(TimeSource.class), clicks);
+        stats.setClicks(clicks);
         for (int i = 0; i < 6; i++) {
             assertThat(stats.enough()).isFalse();
             clicks.onNext(true);

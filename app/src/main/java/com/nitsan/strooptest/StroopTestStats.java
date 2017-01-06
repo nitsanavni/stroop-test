@@ -9,17 +9,22 @@ import rx.Observable;
 class StroopTestStats {
 
     private static final int ENOUGH = 6;
+    private final TimeSource time;
 
     private long prevTime = 0L;
     private List<Integer> congruents;
     private List<Integer> incongruents;
 
     // TODO - instead of Boolean - change to TrialResult (isCongruent?, isCorrect?)
-    StroopTestStats(TimeSource time, Observable<Boolean> clicks) {
+    StroopTestStats(TimeSource time) {
+        this.time = time;
         congruents = new ArrayList<>();
         incongruents = new ArrayList<>();
         // TODO - first timestamp should not be here - should only be after starting the test
         prevTime = time.get();
+    }
+
+    void setClicks(Observable<Boolean> clicks) {
         clicks.subscribe(congruent -> {
             long current = time.get();
             int trialTime = (int) (current - prevTime);

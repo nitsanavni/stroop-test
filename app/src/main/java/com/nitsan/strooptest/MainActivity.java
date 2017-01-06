@@ -10,10 +10,10 @@ import java.util.Random;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-public class MainActivity extends Activity implements UI, StroopTestUI {
+public class MainActivity extends Activity implements UI, StroopTestFlowUI {
 
     private AppFlow flow;
-    private StroopTest test;
+    private StroopTestFlow test;
     private PublishSubject<Object> initialExplanationSubject;
     private View initialExplanationButton;
     private PublishSubject<Object> testSubject;
@@ -23,7 +23,7 @@ public class MainActivity extends Activity implements UI, StroopTestUI {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         flow = new AppFlow(this);
-        test = new StroopTest(this, new RandomColor(new Random()));
+        test = new StroopTestFlow(this, new RandomColor(new Random()), new StroopTestStats(SystemTime.get()));
         setContentView(R.layout.activity_main);
         initialExplanationButton = findViewById(R.id.initial_explanation_button);
     }
