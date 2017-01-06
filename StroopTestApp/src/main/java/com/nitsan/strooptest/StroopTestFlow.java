@@ -73,10 +73,9 @@ class StroopTestFlow {
         return endSubject;
     }
 
-    StroopTestFlow start() {
+    void start() {
         currentLabel = makeLabel();
         ui.showLabel(currentLabel);
-        return this;
     }
 
     // TODO - should be "makeTrial"

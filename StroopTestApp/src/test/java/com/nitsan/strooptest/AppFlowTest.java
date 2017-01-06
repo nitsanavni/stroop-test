@@ -90,4 +90,35 @@ public class AppFlowTest {
         verify(stroopTestFlow2, times(1)).start();
     }
 
+    @Test
+    public void shouldRunTestsOneAtATime_threeTests() {
+        UI ui = mock(UI.class);
+        PublishSubject<Object> initialExplanationSubject = PublishSubject.create();
+        when(ui.initialExplanation()).thenReturn(initialExplanationSubject);
+        List<StroopTestFlow> flows = new ArrayList<>(3);
+        StroopTestFlow stroopTestFlow = mock(StroopTestFlow.class);
+        PublishSubject<Object> testEndSubject = PublishSubject.create();
+        when(stroopTestFlow.end()).thenReturn(testEndSubject);
+        flows.add(stroopTestFlow);
+        StroopTestFlow stroopTestFlow2 = mock(StroopTestFlow.class);
+        PublishSubject<Object> testEndSubject2 = PublishSubject.create();
+        when(stroopTestFlow2.end()).thenReturn(testEndSubject2);
+        flows.add(stroopTestFlow2);
+        StroopTestFlow stroopTestFlow3 = mock(StroopTestFlow.class);
+        PublishSubject<Object> testEndSubject3 = PublishSubject.create();
+        when(stroopTestFlow3.end()).thenReturn(testEndSubject3);
+        flows.add(stroopTestFlow3);
+        AppFlow flow = new AppFlow(ui, flows);
+        flow.start();
+        initialExplanationSubject.onNext(new Object());
+        testEndSubject.onNext(new Object());
+        verify(stroopTestFlow2, times(1)).start();
+        verify(stroopTestFlow3, times(0)).start();
+        testEndSubject2.onNext(new Object());
+        verify(stroopTestFlow3, times(1)).start();
+        verify(ui, times(0)).summary();
+        testEndSubject3.onNext(new Object());
+        verify(ui, times(1)).summary();
+    }
+
 }
