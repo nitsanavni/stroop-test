@@ -1,8 +1,8 @@
 package com.nitsan.strooptest;
 
-import android.util.Log;
-
 import java.util.List;
+
+import rx.Observable;
 
 class AppFlow {
     private static final String TAG = "app-flow";
@@ -15,12 +15,22 @@ class AppFlow {
     }
 
     void start() {
-        ui.initialExplanation()
-                .flatMap(o -> {
-                    ui.test();
-                    // Observable.from(tests)
-                    return stroopTests.get(0).start();
+        Observable
+                .from(stroopTests)
+                .scan((p, f) -> {
+                    p.end().subscribe(o -> f.start());
+                    return f;
                 })
-                .subscribe(o -> ui.summary(), t -> Log.e(TAG, "", t));
+                .subscribe();
+        if (!stroopTests.isEmpty()) {
+            stroopTests.get(stroopTests.size() - 1).end().subscribe(o -> ui.summary());
+        }
+        ui.initialExplanation()
+                .subscribe(o -> {
+                    ui.test();
+                    if (!stroopTests.isEmpty()) {
+                        stroopTests.get(0).start();
+                    }
+                });
     }
 }

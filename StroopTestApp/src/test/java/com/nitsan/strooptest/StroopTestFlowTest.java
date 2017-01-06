@@ -100,7 +100,8 @@ public class StroopTestFlowTest {
         when(stats.enough()).thenReturn(true);
         StroopTestFlow test = new StroopTestFlow(ui, randomColor, stats);
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
-        test.start().subscribe(testSubscriber);
+        test.end().subscribe(testSubscriber);
+        test.start();
         clicks.onNext(Blue.get());
         //testSubscriber.awaitTerminalEvent();
         assertThat(testSubscriber.getOnNextEvents()).hasSize(1);

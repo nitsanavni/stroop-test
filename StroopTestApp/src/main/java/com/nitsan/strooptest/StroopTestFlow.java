@@ -68,11 +68,15 @@ class StroopTestFlow {
         });
     }
 
-    Observable<Object> start() {
-        currentLabel = makeLabel();
-        ui.showLabel(currentLabel);
+    Observable<Object> end() {
         endSubject = PublishSubject.create();
         return endSubject;
+    }
+
+    StroopTestFlow start() {
+        currentLabel = makeLabel();
+        ui.showLabel(currentLabel);
+        return this;
     }
 
     // TODO - should be "makeTrial"

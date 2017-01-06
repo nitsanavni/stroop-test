@@ -30,7 +30,7 @@ public class AppFlowTest {
         UI ui = mock(UI.class);
         PublishSubject<Object> initialExplanationSubject = PublishSubject.create();
         when(ui.initialExplanation()).thenReturn(initialExplanationSubject);
-        AppFlow flow = new AppFlow(ui, null);
+        AppFlow flow = new AppFlow(ui, Collections.EMPTY_LIST);
         flow.start();
         initialExplanationSubject.onNext(new Object());
         verify(ui, times(1)).test();
@@ -43,6 +43,7 @@ public class AppFlowTest {
         when(ui.initialExplanation()).thenReturn(initialExplanationSubject);
         List<StroopTestFlow> flows = new ArrayList<>(3);
         StroopTestFlow stroopTestFlow = mock(StroopTestFlow.class);
+        when(stroopTestFlow.end()).thenReturn(PublishSubject.create());
         flows.add(stroopTestFlow);
         AppFlow flow = new AppFlow(ui, flows);
         flow.start();
@@ -58,13 +59,35 @@ public class AppFlowTest {
         List<StroopTestFlow> flows = new ArrayList<>(3);
         StroopTestFlow stroopTestFlow = mock(StroopTestFlow.class);
         PublishSubject<Object> testEndSubject = PublishSubject.create();
-        when(stroopTestFlow.start()).thenReturn(testEndSubject);
+        when(stroopTestFlow.end()).thenReturn(testEndSubject);
         flows.add(stroopTestFlow);
         AppFlow flow = new AppFlow(ui, flows);
         flow.start();
         initialExplanationSubject.onNext(new Object());
         testEndSubject.onNext(new Object());
         verify(ui, times(1)).summary();
+    }
+
+    @Test
+    public void shouldRunTestsOneAtATime() {
+        UI ui = mock(UI.class);
+        PublishSubject<Object> initialExplanationSubject = PublishSubject.create();
+        when(ui.initialExplanation()).thenReturn(initialExplanationSubject);
+        List<StroopTestFlow> flows = new ArrayList<>(3);
+        StroopTestFlow stroopTestFlow = mock(StroopTestFlow.class);
+        PublishSubject<Object> testEndSubject = PublishSubject.create();
+        when(stroopTestFlow.end()).thenReturn(testEndSubject);
+        flows.add(stroopTestFlow);
+        StroopTestFlow stroopTestFlow2 = mock(StroopTestFlow.class);
+        PublishSubject<Object> testEndSubject2 = PublishSubject.create();
+        when(stroopTestFlow2.end()).thenReturn(testEndSubject2);
+        flows.add(stroopTestFlow2);
+        AppFlow flow = new AppFlow(ui, flows);
+        flow.start();
+        initialExplanationSubject.onNext(new Object());
+        testEndSubject.onNext(new Object());
+        verify(ui, times(0)).summary();
+        verify(stroopTestFlow2, times(1)).start();
     }
 
 }
