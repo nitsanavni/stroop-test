@@ -133,4 +133,32 @@ public class TestFlowTest {
         assertThat(test.stats()).isEqualTo("incorrect: 1");
     }
 
+    @Test
+    public void shouldSpecifyLabelMaking() {
+        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
+        PublishSubject<Color> clicks = PublishSubject.create();
+        when(ui.getClicks()).thenReturn(clicks);
+        TestSpecifics specifics = mock(TestSpecifics.class);
+        TestFlow test = new TestFlow(ui, specifics);
+        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        test.end().subscribe(testSubscriber);
+        test.start();
+        test.instructionsRead();
+        verify(specifics, times(1)).makeNextLabel();
+    }
+
+    @Test
+    public void shouldSpecifyInstructions() {
+        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
+        PublishSubject<Color> clicks = PublishSubject.create();
+        when(ui.getClicks()).thenReturn(clicks);
+        TestSpecifics specifics = mock(TestSpecifics.class);
+        when(specifics.testInstructions()).thenReturn("specific test instructions");
+        TestFlow test = new TestFlow(ui, specifics);
+        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        test.end().subscribe(testSubscriber);
+        test.start();
+        verify(ui, times(1)).showTestInstructions(test, "specific test instructions");
+    }
+
 }

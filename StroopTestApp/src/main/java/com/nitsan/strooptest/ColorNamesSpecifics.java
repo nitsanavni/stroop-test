@@ -16,4 +16,9 @@ final class ColorNamesSpecifics implements TestSpecifics {
     public Label makeNextLabel() {
         return Label.newColorNameInstance(randomColor);
     }
+
+    @Override
+    public String testInstructions() {
+        return null;
+    }
 }

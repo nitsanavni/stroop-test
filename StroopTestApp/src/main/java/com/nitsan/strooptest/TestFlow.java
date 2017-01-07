@@ -83,7 +83,7 @@ class TestFlow {
     }
 
     private String instructions() {
-        return null;
+        return specifics.testInstructions();
     }
 
     void instructionsRead() {

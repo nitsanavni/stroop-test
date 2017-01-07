@@ -16,4 +16,9 @@ final class StroopTestSpecifics implements TestSpecifics {
     public Label makeNextLabel() {
         return Label.newStroopTestInstance(randomColor);
     }
+
+    @Override
+    public String testInstructions() {
+        return null;
+    }
 }
