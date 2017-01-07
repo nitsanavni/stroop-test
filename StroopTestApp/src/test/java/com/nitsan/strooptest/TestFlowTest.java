@@ -120,58 +120,6 @@ public class TestFlowTest {
         verify(ui, times(1)).showTestInstructions(any(TestFlow.class), anyString());
     }
 
-
-    // TODO - move these guys into StroopTestSpecificsTest
-    @Test
-    public void shouldStatIncorrect1() {
-        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
-        PublishSubject<Color> clicks = PublishSubject.create();
-        when(ui.getClicks()).thenReturn(clicks);
-        RandomColor randomColor = mock(RandomColor.class);
-        when(randomColor.next()).thenReturn(Black.get());
-        TestFlow test = new TestFlow(ui, randomColor, mock(TestSpecifics.class));
-        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
-        test.end().subscribe(testSubscriber);
-        test.start();
-        test.instructionsRead();
-        clicks.onNext(Blue.get());
-        assertThat(test.stats()).isEqualTo("incorrect: 1");
-    }
-
-    @Test
-    public void shouldStatIncorrect2() {
-        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
-        PublishSubject<Color> clicks = PublishSubject.create();
-        when(ui.getClicks()).thenReturn(clicks);
-        RandomColor randomColor = mock(RandomColor.class);
-        when(randomColor.next()).thenReturn(Black.get());
-        TestFlow test = new TestFlow(ui, randomColor, mock(TestSpecifics.class));
-        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
-        test.end().subscribe(testSubscriber);
-        test.start();
-        test.instructionsRead();
-        clicks.onNext(Blue.get());
-        clicks.onNext(Blue.get());
-        assertThat(test.stats()).isEqualTo("incorrect: 2");
-    }
-
-    @Test
-    public void shouldStatIncorrect0() {
-        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
-        PublishSubject<Color> clicks = PublishSubject.create();
-        when(ui.getClicks()).thenReturn(clicks);
-        RandomColor randomColor = mock(RandomColor.class);
-        when(randomColor.next()).thenReturn(Black.get());
-        TestFlow test = new TestFlow(ui, randomColor, mock(TestSpecifics.class));
-        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
-        test.end().subscribe(testSubscriber);
-        test.start();
-        test.instructionsRead();
-        clicks.onNext(Black.get());
-        clicks.onNext(Black.get());
-        assertThat(test.stats()).isEqualTo("incorrect: 0");
-    }
-
     @Test
     public void shouldSpecifyCorrectnessCriterion() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);

@@ -2,13 +2,17 @@ package com.nitsan.strooptest;
 
 import android.support.annotation.ColorInt;
 
-final class Label {
+class Label {
     private final Color text;
     private final Color color;
 
     Label(RandomColor randomColor) {
-        this.text = randomColor.next();
-        this.color = randomColor.next();
+        this(randomColor.next(), randomColor.next());
+    }
+
+    Label(Color text, Color color) {
+        this.text = text;
+        this.color = color;
     }
 
     String text() {
