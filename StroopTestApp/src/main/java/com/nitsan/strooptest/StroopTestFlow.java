@@ -34,25 +34,22 @@ import rx.subjects.PublishSubject;
 // - integrate Hebrew texts
 
 class StroopTestFlow {
+    private static final int TARGET_NUM_OF_TRIALS = 30;
     private final StroopTestFlowUI ui;
-    private final StroopTestStats stats;
     private final RandomColor randomColor;
-    private final PublishSubject<Boolean> trialResultSubject = PublishSubject.create();
 
     private Label currentLabel;
     private PublishSubject<Object> endSubject;
+    private int numOfTrials = 0;
 
-    StroopTestFlow(StroopTestFlowUI ui, RandomColor randomColor, StroopTestStats stats) {
+    StroopTestFlow(StroopTestFlowUI ui, RandomColor randomColor) {
         this.randomColor = randomColor;
         this.ui = ui;
-        this.stats = stats;
-        stats.setClicks(trialResultSubject);
         ui.getClicks().subscribe(clickedColor -> {
-            boolean congruent = currentLabel.isCongruent();
-            trialResultSubject.onNext(congruent);
+            numOfTrials++;
             boolean correct = currentLabel.hasColor(clickedColor);
             ui.correct(correct);
-            if (this.stats.enough()) {
+            if (enough()) {
                 endSubject.onNext(new Object());
             } else {
                 currentLabel = makeLabel();
@@ -66,6 +63,10 @@ class StroopTestFlow {
                         .subscribe(i -> ui.showLabel(currentLabel));
             }
         });
+    }
+
+    private boolean enough() {
+        return numOfTrials >= TARGET_NUM_OF_TRIALS;
     }
 
     Observable<Object> end() {

@@ -1,9 +1,12 @@
 package com.nitsan.strooptest;
 
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Scheduler;
@@ -22,13 +25,37 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@FixMethodOrder(MethodSorters.DEFAULT)
 public class StroopTestFlowTest {
+    private static TestScheduler scheduler = new TestScheduler();
+
+    @Before
+    public void setUp() {
+        RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
+            @Override
+            public Scheduler getComputationScheduler() {
+                return scheduler;
+            }
+        });
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return scheduler;
+            }
+        });
+    }
+
+    @After
+    public void resetHooks() {
+        RxJavaPlugins.getInstance().reset();
+        RxAndroidPlugins.getInstance().reset();
+    }
 
     @Test
     public void shouldShowLabel() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        StroopTestFlow test = new StroopTestFlow(ui, mock(RandomColor.class), mock(StroopTestStats.class));
+        StroopTestFlow test = new StroopTestFlow(ui, mock(RandomColor.class));
         test.start();
         verify(ui, times(1)).showLabel(any(Label.class));
     }
@@ -37,73 +64,41 @@ public class StroopTestFlowTest {
     public void shouldListenToClicks() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        StroopTestFlow test = new StroopTestFlow(ui, mock(RandomColor.class), mock(StroopTestStats.class));
+        StroopTestFlow test = new StroopTestFlow(ui, mock(RandomColor.class));
         test.start();
         verify(ui, times(1)).getClicks();
     }
 
     @Test
     public void onColorButtonClick_shouldShowNextLabel() {
-        TestScheduler scheduler = new TestScheduler();
-        RxJavaPlugins.getInstance().reset();
-        RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
-            @Override
-            public Scheduler getComputationScheduler() {
-                return scheduler;
-            }
-        });
-        RxAndroidPlugins.getInstance().reset();
-        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
-            @Override
-            public Scheduler getMainThreadScheduler() {
-                return scheduler;
-            }
-        });
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
         RandomColor randomColor = mock(RandomColor.class);
         when(randomColor.next()).thenReturn(Black.get());
-        StroopTestStats stats = mock(StroopTestStats.class);
-        when(stats.enough()).thenReturn(false);
-        StroopTestFlow test = new StroopTestFlow(ui, randomColor, stats);
+        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        test.end().subscribe();
         test.start();
         verify(ui, times(1)).showLabel(any(Label.class));
         clicks.onNext(Blue.get());
-        scheduler.advanceTimeBy(1000, TimeUnit.MILLISECONDS);
+        scheduler.advanceTimeBy(50000, TimeUnit.MILLISECONDS);
         verify(ui, times(2)).showLabel(any(Label.class));
     }
 
     @Test
-    public void whenEnough_shouldEnd() {
-        TestScheduler scheduler = new TestScheduler();
-        RxJavaPlugins.getInstance().reset();
-        RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
-            @Override
-            public Scheduler getComputationScheduler() {
-                return scheduler;
-            }
-        });
-        RxAndroidPlugins.getInstance().reset();
-        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
-            @Override
-            public Scheduler getMainThreadScheduler() {
-                return scheduler;
-            }
-        });
+    public void shouldEndAfterXTrials() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
         RandomColor randomColor = mock(RandomColor.class);
         when(randomColor.next()).thenReturn(Black.get());
-        StroopTestStats stats = mock(StroopTestStats.class);
-        when(stats.enough()).thenReturn(true);
-        StroopTestFlow test = new StroopTestFlow(ui, randomColor, stats);
+        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
-        clicks.onNext(Blue.get());
-        //testSubscriber.awaitTerminalEvent();
+        for (int i = 0; i < 30; i++) {
+            clicks.onNext(Blue.get());
+        }
         assertThat(testSubscriber.getOnNextEvents()).hasSize(1);
     }
 

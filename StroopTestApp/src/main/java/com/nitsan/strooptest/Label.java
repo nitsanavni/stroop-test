@@ -20,10 +20,6 @@ final class Label {
         return color.color();
     }
 
-    boolean isCongruent() {
-        return text.equals(color);
-    }
-
     boolean hasColor(Color color) {
         return this.color.equals(color);
     }

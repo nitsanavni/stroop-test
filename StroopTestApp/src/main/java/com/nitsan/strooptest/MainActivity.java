@@ -17,13 +17,12 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     private AppFlow flow;
     private PublishSubject<Object> initialExplanationSubject;
     private View initialExplanationButton;
-    private PublishSubject<Object> testSubject;
     private PublishSubject<Color> colorClicksSubject = PublishSubject.create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StroopTestFlow test = new StroopTestFlow(this, new RandomColor(new Random()), new StroopTestStats(SystemTime.get()));
+        StroopTestFlow test = new StroopTestFlow(this, new RandomColor(new Random()));
         List<StroopTestFlow> flows = new ArrayList<>(1);
         flows.add(test);
         flow = new AppFlow(this, flows);
