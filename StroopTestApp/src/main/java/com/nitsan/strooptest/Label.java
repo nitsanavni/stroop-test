@@ -6,13 +6,13 @@ class Label {
     private final Color text;
     private final Color color;
 
-    Label(RandomColor randomColor) {
-        this(randomColor.next(), randomColor.next());
-    }
-
     Label(Color text, Color color) {
         this.text = text;
         this.color = color;
+    }
+
+    static Label newStroopTestInstance(RandomColor randomColor) {
+        return new Label(randomColor.next(), randomColor.next());
     }
 
     static Label newColorNameInstance(RandomColor randomColor) {
