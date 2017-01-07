@@ -41,6 +41,7 @@ class StroopTestFlow {
     private Label currentLabel;
     private PublishSubject<Object> endSubject;
     private int numOfTrials = 0;
+    private int incorrectTrials = 0;
 
     StroopTestFlow(StroopTestFlowUI ui, RandomColor randomColor) {
         this.randomColor = randomColor;
@@ -48,6 +49,9 @@ class StroopTestFlow {
         ui.getClicks().subscribe(clickedColor -> {
             numOfTrials++;
             boolean correct = currentLabel.hasColor(clickedColor);
+            if (!correct) {
+                incorrectTrials++;
+            }
             ui.correct(correct);
             if (enough()) {
                 endSubject.onNext(new Object());
@@ -91,4 +95,9 @@ class StroopTestFlow {
         currentLabel = makeLabel();
         ui.showLabel(currentLabel);
     }
+
+    String stats() {
+        return "incorrect: " + incorrectTrials;
+    }
+
 }

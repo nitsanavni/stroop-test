@@ -121,4 +121,54 @@ public class StroopTestFlowTest {
         verify(ui, times(1)).showTestInstructions(any(StroopTestFlow.class), anyString());
     }
 
+    @Test
+    public void shouldCountIncorrect1() {
+        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
+        PublishSubject<Color> clicks = PublishSubject.create();
+        when(ui.getClicks()).thenReturn(clicks);
+        RandomColor randomColor = mock(RandomColor.class);
+        when(randomColor.next()).thenReturn(Black.get());
+        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        test.end().subscribe(testSubscriber);
+        test.start();
+        test.instructionsRead();
+        clicks.onNext(Blue.get());
+        assertThat(test.stats()).isEqualTo("incorrect: 1");
+    }
+
+    @Test
+    public void shouldCountIncorrect2() {
+        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
+        PublishSubject<Color> clicks = PublishSubject.create();
+        when(ui.getClicks()).thenReturn(clicks);
+        RandomColor randomColor = mock(RandomColor.class);
+        when(randomColor.next()).thenReturn(Black.get());
+        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        test.end().subscribe(testSubscriber);
+        test.start();
+        test.instructionsRead();
+        clicks.onNext(Blue.get());
+        clicks.onNext(Blue.get());
+        assertThat(test.stats()).isEqualTo("incorrect: 2");
+    }
+
+    @Test
+    public void shouldCountIncorrect0() {
+        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
+        PublishSubject<Color> clicks = PublishSubject.create();
+        when(ui.getClicks()).thenReturn(clicks);
+        RandomColor randomColor = mock(RandomColor.class);
+        when(randomColor.next()).thenReturn(Black.get());
+        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        test.end().subscribe(testSubscriber);
+        test.start();
+        test.instructionsRead();
+        clicks.onNext(Black.get());
+        clicks.onNext(Black.get());
+        assertThat(test.stats()).isEqualTo("incorrect: 0");
+    }
+
 }
