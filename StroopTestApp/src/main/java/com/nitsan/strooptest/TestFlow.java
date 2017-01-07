@@ -37,18 +37,20 @@ class TestFlow {
     private static final int TARGET_NUM_OF_TRIALS = 30;
     private final StroopTestFlowUI ui;
     private final RandomColor randomColor;
+    private final TestSpecifics specifics;
 
     private Label currentLabel;
     private PublishSubject<Object> endSubject;
     private int numOfTrials = 0;
     private int incorrectTrials = 0;
 
-    TestFlow(StroopTestFlowUI ui, RandomColor randomColor) {
+    TestFlow(StroopTestFlowUI ui, RandomColor randomColor, TestSpecifics specifics) {
+        this.specifics = specifics;
         this.randomColor = randomColor;
         this.ui = ui;
         ui.getClicks().subscribe(clickedColor -> {
             numOfTrials++;
-            boolean correct = currentLabel.hasColor(clickedColor);
+            boolean correct = specifics.correct(currentLabel, clickedColor);
             if (!correct) {
                 incorrectTrials++;
             }

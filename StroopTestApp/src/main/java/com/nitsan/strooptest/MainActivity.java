@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TestFlow test = new TestFlow(this, new RandomColor(new Random()));
+        TestFlow test = new TestFlow(this, new RandomColor(new Random()), new StroopTestSpecifics());
         List<TestFlow> flows = new ArrayList<>(1);
         flows.add(test);
         flow = new AppFlow(this, flows);
