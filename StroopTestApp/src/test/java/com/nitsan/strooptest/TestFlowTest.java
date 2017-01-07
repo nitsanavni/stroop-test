@@ -56,17 +56,18 @@ public class TestFlowTest {
     public void shouldShowLabel() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        TestFlow test = new TestFlow(ui, mock(TestSpecifics.class));
+        TestSpecifics specifics = mock(TestSpecifics.class);
+        TestFlow test = new TestFlow(ui, specifics, mock(TimeSource.class));
         test.start();
         test.instructionsRead();
-        verify(ui, times(1)).showLabel(any(Label.class));
+        verify(specifics, times(1)).showLabel(any(), any());
     }
 
     @Test
     public void shouldListenToClicks() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        TestFlow testFlow = new TestFlow(ui, mock(TestSpecifics.class));
+        TestFlow testFlow = new TestFlow(ui, mock(TestSpecifics.class), mock(TimeSource.class));
         testFlow.start();
         verify(ui, times(1)).getClicks();
     }
@@ -76,14 +77,15 @@ public class TestFlowTest {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
-        TestFlow test = new TestFlow(ui, mock(TestSpecifics.class));
+        TestSpecifics specifics = mock(TestSpecifics.class);
+        TestFlow test = new TestFlow(ui, specifics, mock(TimeSource.class));
         test.end().subscribe();
         test.start();
         test.instructionsRead();
-        verify(ui, times(1)).showLabel(any(Label.class));
+        verify(specifics, times(1)).showLabel(any(), any());
         clicks.onNext(Blue.get());
         scheduler.advanceTimeBy(50000, TimeUnit.MILLISECONDS);
-        verify(ui, times(2)).showLabel(any(Label.class));
+        verify(specifics, times(2)).showLabel(any(), any());
     }
 
     @Test
@@ -91,17 +93,18 @@ public class TestFlowTest {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
-        TestFlow test = new TestFlow(ui, mock(TestSpecifics.class));
+        TestSpecifics specifics = mock(TestSpecifics.class);
+        TestFlow test = new TestFlow(ui, specifics, mock(TimeSource.class));
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
         test.instructionsRead();
-        for (int i = 0; i < 35; i++) {
+        for (int i = 0; i < TestFlow.TARGET_NUM_OF_TRIALS + 5; i++) {
             clicks.onNext(Blue.get());
+            scheduler.advanceTimeBy(300, TimeUnit.MILLISECONDS);
         }
         assertThat(testSubscriber.getOnNextEvents()).hasSize(1);
-        scheduler.advanceTimeBy(300, TimeUnit.MILLISECONDS);
-        verify(ui, times(30)).showLabel(any());
+        verify(specifics, times(TestFlow.TARGET_NUM_OF_TRIALS)).showLabel(any(), any());
     }
 
     @Test
@@ -109,7 +112,7 @@ public class TestFlowTest {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
-        TestFlow test = new TestFlow(ui, mock(TestSpecifics.class));
+        TestFlow test = new TestFlow(ui, mock(TestSpecifics.class), mock(TimeSource.class));
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
@@ -123,17 +126,17 @@ public class TestFlowTest {
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
         TestSpecifics specifics = mock(TestSpecifics.class);
-        TestFlow test = new TestFlow(ui, specifics);
+        TestFlow test = new TestFlow(ui, specifics, mock(TimeSource.class));
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
         test.instructionsRead();
         when(specifics.correct(any(), any())).thenReturn(false);
         clicks.onNext(Black.get());
-        assertThat(test.stats()).isEqualTo("incorrect: 1");
+        assertThat(test.stats()).isEqualTo("incorrect: 1, time: 0.0");
         when(specifics.correct(any(), any())).thenReturn(true);
         clicks.onNext(Black.get());
-        assertThat(test.stats()).isEqualTo("incorrect: 1");
+        assertThat(test.stats()).isEqualTo("incorrect: 1, time: 0.0");
     }
 
     @Test
@@ -142,7 +145,7 @@ public class TestFlowTest {
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
         TestSpecifics specifics = mock(TestSpecifics.class);
-        TestFlow test = new TestFlow(ui, specifics);
+        TestFlow test = new TestFlow(ui, specifics, mock(TimeSource.class));
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
@@ -157,11 +160,32 @@ public class TestFlowTest {
         when(ui.getClicks()).thenReturn(clicks);
         TestSpecifics specifics = mock(TestSpecifics.class);
         when(specifics.testInstructions()).thenReturn("specific test instructions");
-        TestFlow test = new TestFlow(ui, specifics);
+        TestFlow test = new TestFlow(ui, specifics, mock(TimeSource.class));
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
         verify(ui, times(1)).showTestInstructions(test, "specific test instructions");
     }
+
+    @Test
+    public void shouldStatOverallTime() {
+        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
+        PublishSubject<Color> clicks = PublishSubject.create();
+        when(ui.getClicks()).thenReturn(clicks);
+        TestSpecifics specifics = mock(TestSpecifics.class);
+        when(specifics.correct(any(), any())).thenReturn(true);
+        TimeSource time = mock(TimeSource.class);
+        when(time.get()).thenReturn(0L).thenReturn(20L);
+        TestFlow test = new TestFlow(ui, specifics, time);
+        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        test.end().subscribe(testSubscriber);
+        test.start();
+        test.instructionsRead();
+        for (int i = 0; i < TestFlow.TARGET_NUM_OF_TRIALS; i++) {
+            clicks.onNext(Black.get());
+        }
+        assertThat(test.stats()).isEqualTo("incorrect: 0, time: 0.02");
+    }
+
 
 }

@@ -15,4 +15,6 @@
     <string name="start_test_button">Start</string>
     <string name="stroop_instructions">להלן מילים בצבעים</string>
     <string name="color_names_instructions">להלן שמות צבעים</string>
+    <string name="colored_rectangles_instructions">לפניך צבעים</string>
+    <string name="share_using">share using</string>
 </resources>

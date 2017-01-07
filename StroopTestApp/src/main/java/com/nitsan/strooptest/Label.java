@@ -19,6 +19,10 @@ class Label {
         return new Label(randomColor.next(), Black.get());
     }
 
+    static Label newColoredRectangleInstance(RandomColor randomColor) {
+        return new Label(null, randomColor.next());
+    }
+
     String text() {
         return text.text();
     }

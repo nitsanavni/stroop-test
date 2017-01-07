@@ -1,5 +1,7 @@
 package com.nitsan.strooptest;
 
+import android.support.annotation.ColorInt;
+
 import rx.Observable;
 
 interface StroopTestFlowUI {
@@ -12,4 +14,8 @@ interface StroopTestFlowUI {
     void correct(boolean correct);
 
     void showTestInstructions(TestFlow flow, String instructions);
+
+    void showColoredRectangle(@ColorInt int color);
+
+    void startTest();
 }

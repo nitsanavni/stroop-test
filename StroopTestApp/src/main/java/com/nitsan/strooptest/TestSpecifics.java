@@ -6,4 +6,8 @@ interface TestSpecifics {
     Label makeNextLabel();
 
     String testInstructions();
+
+    void showLabel(StroopTestFlowUI ui, Label label);
+
+    String testName();
 }

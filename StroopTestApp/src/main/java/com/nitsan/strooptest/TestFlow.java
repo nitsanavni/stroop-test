@@ -35,19 +35,23 @@ import rx.subjects.PublishSubject;
 // - integrate Hebrew texts
 
 class TestFlow {
-    private static final int TARGET_NUM_OF_TRIALS = 30;
+    static final int TARGET_NUM_OF_TRIALS = 30;
     private final StroopTestFlowUI ui;
     private final TestSpecifics specifics;
+    private final TimeSource time;
 
     private Label currentLabel;
     private PublishSubject<Object> endSubject;
     private int numOfTrials = 0;
     private int incorrectTrials = 0;
     private Subscription clickSubscription;
+    private long startTime;
+    private long endTime;
 
-    TestFlow(StroopTestFlowUI ui, TestSpecifics specifics) {
+    TestFlow(StroopTestFlowUI ui, TestSpecifics specifics, TimeSource time) {
         this.specifics = specifics;
         this.ui = ui;
+        this.time = time;
     }
 
     private void subscribeToClicks() {
@@ -59,19 +63,24 @@ class TestFlow {
             }
             ui.correct(correct);
             if (enough()) {
+                endTime = time.get();
                 clickSubscription.unsubscribe();
-                endSubject.onNext(new Object());
             } else {
                 currentLabel = specifics.makeNextLabel();
-                // TODO - move delay functionality to Rx util class
-                Observable
-                        .just(0)
-                        .subscribeOn(Schedulers.immediate())
-                        // TODO - subtract this delay from the stats / move timing into "Trial" class having start time and end time
-                        .delay(300, TimeUnit.MILLISECONDS, Schedulers.computation())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(i -> ui.showLabel(currentLabel));
             }
+            // TODO - move delay functionality to Rx util class
+            Observable
+                    .just(0)
+                    .subscribeOn(Schedulers.immediate())
+                    .delay(300, TimeUnit.MILLISECONDS, Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(i -> {
+                        if (enough()) {
+                            endSubject.onNext(new Object());
+                        } else {
+                            specifics.showLabel(ui, currentLabel);
+                        }
+                    });
         });
     }
 
@@ -94,12 +103,17 @@ class TestFlow {
     }
 
     void instructionsRead() {
+        startTime = time.get();
+        ui.startTest();
         currentLabel = specifics.makeNextLabel();
-        ui.showLabel(currentLabel);
+        specifics.showLabel(ui, currentLabel);
     }
 
     String stats() {
-        return "incorrect: " + incorrectTrials;
+        return "incorrect: " + incorrectTrials + ", time: " + ((float) (endTime - startTime) / 1000);
     }
 
+    public String name() {
+        return specifics.testName();
+    }
 }

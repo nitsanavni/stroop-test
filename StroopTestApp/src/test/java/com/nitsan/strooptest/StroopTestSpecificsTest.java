@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 public class StroopTestSpecificsTest {
     @Test
     public void shouldCorrectAccordingToColor() {
-        StroopTestSpecifics specifics = new StroopTestSpecifics(mock(RandomColor.class), null);
+        TestSpecifics specifics = new StroopTestSpecifics(mock(RandomColor.class), null);
         Label label = mock(Label.class);
         when(label.hasColor(any())).thenReturn(true);
         assertThat(specifics.correct(label, Black.get())).isTrue();
@@ -24,7 +24,7 @@ public class StroopTestSpecificsTest {
     @Test
     public void shouldMakeRandomLabels() {
         RandomColor randomColor = mock(RandomColor.class);
-        StroopTestSpecifics specifics = new StroopTestSpecifics(randomColor, null);
+        TestSpecifics specifics = new StroopTestSpecifics(randomColor, null);
         specifics.makeNextLabel();
         verify(randomColor, times(2)).next();
     }

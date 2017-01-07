@@ -9,6 +9,7 @@ import java.util.List;
 
 import rx.subjects.PublishSubject;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,10 +31,14 @@ public class AppFlowTest {
         UI ui = mock(UI.class);
         PublishSubject<Object> initialExplanationSubject = PublishSubject.create();
         when(ui.initialExplanation()).thenReturn(initialExplanationSubject);
-        AppFlow flow = new AppFlow(ui, Collections.EMPTY_LIST);
+        List<TestFlow> flows = new ArrayList<>();
+        TestFlow testFlow = mock(TestFlow.class);
+        when(testFlow.end()).thenReturn(PublishSubject.create());
+        flows.add(testFlow);
+        AppFlow flow = new AppFlow(ui, flows);
         flow.start();
         initialExplanationSubject.onNext(new Object());
-        verify(ui, times(1)).test();
+        verify(testFlow, times(1)).start();
     }
 
     @Test
@@ -65,7 +70,7 @@ public class AppFlowTest {
         flow.start();
         initialExplanationSubject.onNext(new Object());
         testEndSubject.onNext(new Object());
-        verify(ui, times(1)).summary();
+        verify(ui, times(1)).summary(any());
     }
 
     @Test
@@ -86,7 +91,7 @@ public class AppFlowTest {
         flow.start();
         initialExplanationSubject.onNext(new Object());
         testEndSubject.onNext(new Object());
-        verify(ui, times(0)).summary();
+        verify(ui, times(0)).summary(any());
         verify(testFlow2, times(1)).start();
     }
 
@@ -116,9 +121,9 @@ public class AppFlowTest {
         verify(testFlow3, times(0)).start();
         testEndSubject2.onNext(new Object());
         verify(testFlow3, times(1)).start();
-        verify(ui, times(0)).summary();
+        verify(ui, times(0)).summary(any());
         testEndSubject3.onNext(new Object());
-        verify(ui, times(1)).summary();
+        verify(ui, times(1)).summary(any());
     }
 
 }

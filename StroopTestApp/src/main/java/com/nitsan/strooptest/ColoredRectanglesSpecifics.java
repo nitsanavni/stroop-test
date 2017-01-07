@@ -1,10 +1,10 @@
 package com.nitsan.strooptest;
 
-final class StroopTestSpecifics implements TestSpecifics {
+class ColoredRectanglesSpecifics implements TestSpecifics {
     private final RandomColor randomColor;
     private final String instructions;
 
-    StroopTestSpecifics(RandomColor randomColor, String instructions) {
+    ColoredRectanglesSpecifics(RandomColor randomColor, String instructions) {
         this.randomColor = randomColor;
         this.instructions = instructions;
     }
@@ -16,7 +16,7 @@ final class StroopTestSpecifics implements TestSpecifics {
 
     @Override
     public Label makeNextLabel() {
-        return Label.newStroopTestInstance(randomColor);
+        return Label.newColoredRectangleInstance(randomColor);
     }
 
     @Override
@@ -26,11 +26,11 @@ final class StroopTestSpecifics implements TestSpecifics {
 
     @Override
     public void showLabel(StroopTestFlowUI ui, Label label) {
-        ui.showLabel(label);
+        ui.showColoredRectangle(label.color());
     }
 
     @Override
     public String testName() {
-        return "Stroop";
+        return "Colors";
     }
 }

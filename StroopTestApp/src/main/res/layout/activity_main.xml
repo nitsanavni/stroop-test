@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- TODO - experiment with constraint layout -->
+<?xml version="1.0" encoding="utf-8"?><!-- TODO - experiment with constraint layout -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -105,5 +104,22 @@
             android:text="צהוב" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/email_stats_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/restart"
+        android:text="send"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/restart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="restart"
+        android:visibility="gone" />
 
 </RelativeLayout>

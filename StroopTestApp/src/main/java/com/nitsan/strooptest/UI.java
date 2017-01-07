@@ -7,5 +7,5 @@ interface UI {
 
     void test();
 
-    void summary();
+    void summary(String summary);
 }
