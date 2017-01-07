@@ -22,9 +22,10 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TestFlow test = new TestFlow(this, new RandomColor(new Random()), new StroopTestSpecifics());
         List<TestFlow> flows = new ArrayList<>(1);
-        flows.add(test);
+        RandomColor randomColor = new RandomColor(new Random());
+        flows.add(new TestFlow(this, new StroopTestSpecifics(randomColor)));
+        flows.add(new TestFlow(this, new ColorNamesSpecifics(randomColor)));
         flow = new AppFlow(this, flows);
         setContentView(R.layout.activity_main);
         initialExplanationButton = findViewById(R.id.initial_explanation_button);

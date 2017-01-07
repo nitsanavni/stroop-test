@@ -10,22 +10,22 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class StroopTestSpecificsTest {
+public class ColorNamesSpecificsTest {
     @Test
-    public void shouldCorrectAccordingToColor() {
-        StroopTestSpecifics specifics = new StroopTestSpecifics(mock(RandomColor.class));
+    public void shouldCorrectAccordingToText() {
+        TestSpecifics specifics = new ColorNamesSpecifics(mock(RandomColor.class));
         Label label = mock(Label.class);
-        when(label.hasColor(any())).thenReturn(true);
+        when(label.hasText(any())).thenReturn(true);
         assertThat(specifics.correct(label, Black.get())).isTrue();
-        when(label.hasColor(any())).thenReturn(false);
+        when(label.hasText(any())).thenReturn(false);
         assertThat(specifics.correct(label, Black.get())).isFalse();
     }
 
     @Test
-    public void shouldMakeRandomLabels() {
+    public void shouldMakeColorNamesLabels() {
         RandomColor randomColor = mock(RandomColor.class);
-        StroopTestSpecifics specifics = new StroopTestSpecifics(randomColor);
+        TestSpecifics specifics = new ColorNamesSpecifics(randomColor);
         specifics.makeNextLabel();
-        verify(randomColor, times(2)).next();
+        verify(randomColor, times(1)).next();
     }
 }

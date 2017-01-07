@@ -56,7 +56,7 @@ public class TestFlowTest {
     public void shouldShowLabel() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        TestFlow test = new TestFlow(ui, mock(RandomColor.class), mock(TestSpecifics.class));
+        TestFlow test = new TestFlow(ui, mock(TestSpecifics.class));
         test.start();
         test.instructionsRead();
         verify(ui, times(1)).showLabel(any(Label.class));
@@ -66,7 +66,7 @@ public class TestFlowTest {
     public void shouldListenToClicks() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        new TestFlow(ui, mock(RandomColor.class), mock(TestSpecifics.class));
+        new TestFlow(ui, mock(TestSpecifics.class));
         verify(ui, times(1)).getClicks();
     }
 
@@ -75,9 +75,7 @@ public class TestFlowTest {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
-        RandomColor randomColor = mock(RandomColor.class);
-        when(randomColor.next()).thenReturn(Black.get());
-        TestFlow test = new TestFlow(ui, randomColor, mock(TestSpecifics.class));
+        TestFlow test = new TestFlow(ui, mock(TestSpecifics.class));
         test.end().subscribe();
         test.start();
         test.instructionsRead();
@@ -92,9 +90,7 @@ public class TestFlowTest {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
-        RandomColor randomColor = mock(RandomColor.class);
-        when(randomColor.next()).thenReturn(Black.get());
-        TestFlow test = new TestFlow(ui, randomColor, mock(TestSpecifics.class));
+        TestFlow test = new TestFlow(ui, mock(TestSpecifics.class));
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
@@ -110,9 +106,7 @@ public class TestFlowTest {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
-        RandomColor randomColor = mock(RandomColor.class);
-        when(randomColor.next()).thenReturn(Black.get());
-        TestFlow test = new TestFlow(ui, randomColor, mock(TestSpecifics.class));
+        TestFlow test = new TestFlow(ui, mock(TestSpecifics.class));
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
@@ -125,10 +119,8 @@ public class TestFlowTest {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
-        RandomColor randomColor = mock(RandomColor.class);
-        when(randomColor.next()).thenReturn(Black.get());
         TestSpecifics specifics = mock(TestSpecifics.class);
-        TestFlow test = new TestFlow(ui, randomColor, specifics);
+        TestFlow test = new TestFlow(ui, specifics);
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();

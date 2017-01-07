@@ -15,6 +15,10 @@ class Label {
         this.color = color;
     }
 
+    static Label newColorNameInstance(RandomColor randomColor) {
+        return new Label(randomColor.next(), Black.get());
+    }
+
     String text() {
         return text.text();
     }
@@ -26,5 +30,9 @@ class Label {
 
     boolean hasColor(Color color) {
         return this.color.equals(color);
+    }
+
+    boolean hasText(Color color) {
+        return this.text.equals(color);
     }
 }

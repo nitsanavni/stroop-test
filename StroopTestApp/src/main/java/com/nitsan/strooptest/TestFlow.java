@@ -36,7 +36,6 @@ import rx.subjects.PublishSubject;
 class TestFlow {
     private static final int TARGET_NUM_OF_TRIALS = 30;
     private final StroopTestFlowUI ui;
-    private final RandomColor randomColor;
     private final TestSpecifics specifics;
 
     private Label currentLabel;
@@ -44,9 +43,8 @@ class TestFlow {
     private int numOfTrials = 0;
     private int incorrectTrials = 0;
 
-    TestFlow(StroopTestFlowUI ui, RandomColor randomColor, TestSpecifics specifics) {
+    TestFlow(StroopTestFlowUI ui, TestSpecifics specifics) {
         this.specifics = specifics;
-        this.randomColor = randomColor;
         this.ui = ui;
         ui.getClicks().subscribe(clickedColor -> {
             numOfTrials++;
@@ -58,7 +56,7 @@ class TestFlow {
             if (enough()) {
                 endSubject.onNext(new Object());
             } else {
-                currentLabel = makeLabel();
+                currentLabel = specifics.makeNextLabel();
                 // TODO - move delay functionality to Rx util class
                 Observable
                         .just(0)
@@ -88,13 +86,8 @@ class TestFlow {
         return null;
     }
 
-    // TODO - should be "makeTrial"
-    private Label makeLabel() {
-        return new Label(randomColor);
-    }
-
     void instructionsRead() {
-        currentLabel = makeLabel();
+        currentLabel = specifics.makeNextLabel();
         ui.showLabel(currentLabel);
     }
 
