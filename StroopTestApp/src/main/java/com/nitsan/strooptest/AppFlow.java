@@ -6,9 +6,9 @@ import rx.Observable;
 
 class AppFlow {
     private final UI ui;
-    private final List<StroopTestFlow> stroopTests;
+    private final List<TestFlow> stroopTests;
 
-    AppFlow(UI ui, List<StroopTestFlow> stroopTests) {
+    AppFlow(UI ui, List<TestFlow> stroopTests) {
         this.ui = ui;
         this.stroopTests = stroopTests;
         connectTheFlow();

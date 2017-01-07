@@ -33,7 +33,7 @@ import rx.subjects.PublishSubject;
 // - landscape support?
 // - integrate Hebrew texts
 
-class StroopTestFlow {
+class TestFlow {
     private static final int TARGET_NUM_OF_TRIALS = 30;
     private final StroopTestFlowUI ui;
     private final RandomColor randomColor;
@@ -43,7 +43,7 @@ class StroopTestFlow {
     private int numOfTrials = 0;
     private int incorrectTrials = 0;
 
-    StroopTestFlow(StroopTestFlowUI ui, RandomColor randomColor) {
+    TestFlow(StroopTestFlowUI ui, RandomColor randomColor) {
         this.randomColor = randomColor;
         this.ui = ui;
         ui.getClicks().subscribe(clickedColor -> {

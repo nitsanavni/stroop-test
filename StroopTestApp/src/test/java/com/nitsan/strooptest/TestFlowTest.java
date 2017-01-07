@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @FixMethodOrder(MethodSorters.DEFAULT)
-public class StroopTestFlowTest {
+public class TestFlowTest {
     private static TestScheduler scheduler = new TestScheduler();
 
     @Before
@@ -56,7 +56,7 @@ public class StroopTestFlowTest {
     public void shouldShowLabel() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        StroopTestFlow test = new StroopTestFlow(ui, mock(RandomColor.class));
+        TestFlow test = new TestFlow(ui, mock(RandomColor.class));
         test.start();
         test.instructionsRead();
         verify(ui, times(1)).showLabel(any(Label.class));
@@ -66,7 +66,7 @@ public class StroopTestFlowTest {
     public void shouldListenToClicks() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        new StroopTestFlow(ui, mock(RandomColor.class));
+        new TestFlow(ui, mock(RandomColor.class));
         verify(ui, times(1)).getClicks();
     }
 
@@ -77,7 +77,7 @@ public class StroopTestFlowTest {
         when(ui.getClicks()).thenReturn(clicks);
         RandomColor randomColor = mock(RandomColor.class);
         when(randomColor.next()).thenReturn(Black.get());
-        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestFlow test = new TestFlow(ui, randomColor);
         test.end().subscribe();
         test.start();
         test.instructionsRead();
@@ -94,7 +94,7 @@ public class StroopTestFlowTest {
         when(ui.getClicks()).thenReturn(clicks);
         RandomColor randomColor = mock(RandomColor.class);
         when(randomColor.next()).thenReturn(Black.get());
-        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestFlow test = new TestFlow(ui, randomColor);
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
@@ -112,12 +112,12 @@ public class StroopTestFlowTest {
         when(ui.getClicks()).thenReturn(clicks);
         RandomColor randomColor = mock(RandomColor.class);
         when(randomColor.next()).thenReturn(Black.get());
-        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestFlow test = new TestFlow(ui, randomColor);
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
         verify(ui, times(0)).showLabel(any(Label.class));
-        verify(ui, times(1)).showTestInstructions(any(StroopTestFlow.class), anyString());
+        verify(ui, times(1)).showTestInstructions(any(TestFlow.class), anyString());
     }
 
     @Test
@@ -127,7 +127,7 @@ public class StroopTestFlowTest {
         when(ui.getClicks()).thenReturn(clicks);
         RandomColor randomColor = mock(RandomColor.class);
         when(randomColor.next()).thenReturn(Black.get());
-        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestFlow test = new TestFlow(ui, randomColor);
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
@@ -143,7 +143,7 @@ public class StroopTestFlowTest {
         when(ui.getClicks()).thenReturn(clicks);
         RandomColor randomColor = mock(RandomColor.class);
         when(randomColor.next()).thenReturn(Black.get());
-        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestFlow test = new TestFlow(ui, randomColor);
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
@@ -160,7 +160,7 @@ public class StroopTestFlowTest {
         when(ui.getClicks()).thenReturn(clicks);
         RandomColor randomColor = mock(RandomColor.class);
         when(randomColor.next()).thenReturn(Black.get());
-        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestFlow test = new TestFlow(ui, randomColor);
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();

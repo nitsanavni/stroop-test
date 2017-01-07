@@ -11,5 +11,5 @@ interface StroopTestFlowUI {
 
     void correct(boolean correct);
 
-    void showTestInstructions(StroopTestFlow flow, String instructions);
+    void showTestInstructions(TestFlow flow, String instructions);
 }

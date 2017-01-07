@@ -22,8 +22,8 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StroopTestFlow test = new StroopTestFlow(this, new RandomColor(new Random()));
-        List<StroopTestFlow> flows = new ArrayList<>(1);
+        TestFlow test = new TestFlow(this, new RandomColor(new Random()));
+        List<TestFlow> flows = new ArrayList<>(1);
         flows.add(test);
         flow = new AppFlow(this, flows);
         setContentView(R.layout.activity_main);
@@ -96,7 +96,7 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     }
 
     @Override
-    public void showTestInstructions(StroopTestFlow flow, String instructions) {
+    public void showTestInstructions(TestFlow flow, String instructions) {
         TextView tv = (TextView) findViewById(R.id.intro_explanation);
         tv.setVisibility(View.VISIBLE);
         tv.setText(instructions);
