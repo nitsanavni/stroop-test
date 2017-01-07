@@ -75,12 +75,20 @@ class StroopTestFlow {
     }
 
     void start() {
-        currentLabel = makeLabel();
-        ui.showLabel(currentLabel);
+        ui.showTestInstructions(this, instructions());
+    }
+
+    private String instructions() {
+        return null;
     }
 
     // TODO - should be "makeTrial"
     private Label makeLabel() {
         return new Label(randomColor);
+    }
+
+    void instructionsRead() {
+        currentLabel = makeLabel();
+        ui.showLabel(currentLabel);
     }
 }

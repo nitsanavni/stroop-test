@@ -95,6 +95,15 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
         celebration.setText(correct ? R.string.correct : R.string.incorrect);
     }
 
+    @Override
+    public void showTestInstructions(StroopTestFlow flow, String instructions) {
+        TextView tv = (TextView) findViewById(R.id.intro_explanation);
+        tv.setVisibility(View.VISIBLE);
+        tv.setText(instructions);
+        initialExplanationButton.setVisibility(View.VISIBLE);
+        initialExplanationButton.setOnClickListener(v -> flow.instructionsRead());
+    }
+
     public void colorButtonClick(View view) {
         switch (view.getId()) {
             case R.id.blackButton:

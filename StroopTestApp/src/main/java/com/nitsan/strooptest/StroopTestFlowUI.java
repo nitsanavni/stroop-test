@@ -10,4 +10,6 @@ interface StroopTestFlowUI {
     void end(String stats);
 
     void correct(boolean correct);
+
+    void showTestInstructions(StroopTestFlow flow, String instructions);
 }

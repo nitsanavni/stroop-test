@@ -20,6 +20,7 @@ import rx.subjects.PublishSubject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -57,6 +58,7 @@ public class StroopTestFlowTest {
         when(ui.getClicks()).thenReturn(PublishSubject.create());
         StroopTestFlow test = new StroopTestFlow(ui, mock(RandomColor.class));
         test.start();
+        test.instructionsRead();
         verify(ui, times(1)).showLabel(any(Label.class));
     }
 
@@ -79,6 +81,7 @@ public class StroopTestFlowTest {
         StroopTestFlow test = new StroopTestFlow(ui, randomColor);
         test.end().subscribe();
         test.start();
+        test.instructionsRead();
         verify(ui, times(1)).showLabel(any(Label.class));
         clicks.onNext(Blue.get());
         scheduler.advanceTimeBy(50000, TimeUnit.MILLISECONDS);
@@ -96,10 +99,26 @@ public class StroopTestFlowTest {
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
+        test.instructionsRead();
         for (int i = 0; i < 30; i++) {
             clicks.onNext(Blue.get());
         }
         assertThat(testSubscriber.getOnNextEvents()).hasSize(1);
+    }
+
+    @Test
+    public void shouldShowTextInstructionsBeforeTestStarts() {
+        StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
+        PublishSubject<Color> clicks = PublishSubject.create();
+        when(ui.getClicks()).thenReturn(clicks);
+        RandomColor randomColor = mock(RandomColor.class);
+        when(randomColor.next()).thenReturn(Black.get());
+        StroopTestFlow test = new StroopTestFlow(ui, randomColor);
+        TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
+        test.end().subscribe(testSubscriber);
+        test.start();
+        verify(ui, times(0)).showLabel(any(Label.class));
+        verify(ui, times(1)).showTestInstructions(any(StroopTestFlow.class), anyString());
     }
 
 }
