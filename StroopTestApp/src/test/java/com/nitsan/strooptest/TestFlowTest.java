@@ -66,7 +66,8 @@ public class TestFlowTest {
     public void shouldListenToClicks() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        new TestFlow(ui, mock(TestSpecifics.class));
+        TestFlow testFlow = new TestFlow(ui, mock(TestSpecifics.class));
+        testFlow.start();
         verify(ui, times(1)).getClicks();
     }
 
@@ -95,10 +96,12 @@ public class TestFlowTest {
         test.end().subscribe(testSubscriber);
         test.start();
         test.instructionsRead();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 35; i++) {
             clicks.onNext(Blue.get());
         }
         assertThat(testSubscriber.getOnNextEvents()).hasSize(1);
+        scheduler.advanceTimeBy(300, TimeUnit.MILLISECONDS);
+        verify(ui, times(30)).showLabel(any());
     }
 
     @Test

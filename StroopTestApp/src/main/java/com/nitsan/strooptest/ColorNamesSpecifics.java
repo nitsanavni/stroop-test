@@ -2,9 +2,11 @@ package com.nitsan.strooptest;
 
 final class ColorNamesSpecifics implements TestSpecifics {
     private final RandomColor randomColor;
+    private final String instructions;
 
-    ColorNamesSpecifics(RandomColor randomColor) {
+    ColorNamesSpecifics(RandomColor randomColor, String instructions) {
         this.randomColor = randomColor;
+        this.instructions = instructions;
     }
 
     @Override
@@ -19,6 +21,6 @@ final class ColorNamesSpecifics implements TestSpecifics {
 
     @Override
     public String testInstructions() {
-        return null;
+        return instructions;
     }
 }

@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 public class ColorNamesSpecificsTest {
     @Test
     public void shouldCorrectAccordingToText() {
-        TestSpecifics specifics = new ColorNamesSpecifics(mock(RandomColor.class));
+        TestSpecifics specifics = new ColorNamesSpecifics(mock(RandomColor.class), null);
         Label label = mock(Label.class);
         when(label.hasText(any())).thenReturn(true);
         assertThat(specifics.correct(label, Black.get())).isTrue();
@@ -24,7 +24,7 @@ public class ColorNamesSpecificsTest {
     @Test
     public void shouldMakeColorNamesLabels() {
         RandomColor randomColor = mock(RandomColor.class);
-        TestSpecifics specifics = new ColorNamesSpecifics(randomColor);
+        TestSpecifics specifics = new ColorNamesSpecifics(randomColor, null);
         specifics.makeNextLabel();
         verify(randomColor, times(1)).next();
     }

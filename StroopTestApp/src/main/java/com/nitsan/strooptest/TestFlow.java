@@ -3,6 +3,7 @@ package com.nitsan.strooptest;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
@@ -42,11 +43,15 @@ class TestFlow {
     private PublishSubject<Object> endSubject;
     private int numOfTrials = 0;
     private int incorrectTrials = 0;
+    private Subscription clickSubscription;
 
     TestFlow(StroopTestFlowUI ui, TestSpecifics specifics) {
         this.specifics = specifics;
         this.ui = ui;
-        ui.getClicks().subscribe(clickedColor -> {
+    }
+
+    private void subscribeToClicks() {
+        clickSubscription = ui.getClicks().subscribe(clickedColor -> {
             numOfTrials++;
             boolean correct = specifics.correct(currentLabel, clickedColor);
             if (!correct) {
@@ -54,6 +59,7 @@ class TestFlow {
             }
             ui.correct(correct);
             if (enough()) {
+                clickSubscription.unsubscribe();
                 endSubject.onNext(new Object());
             } else {
                 currentLabel = specifics.makeNextLabel();
@@ -80,6 +86,7 @@ class TestFlow {
 
     void start() {
         ui.showTestInstructions(this, instructions());
+        subscribeToClicks();
     }
 
     private String instructions() {

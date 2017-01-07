@@ -24,8 +24,8 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
         super.onCreate(savedInstanceState);
         List<TestFlow> flows = new ArrayList<>(1);
         RandomColor randomColor = new RandomColor(new Random());
-        flows.add(new TestFlow(this, new StroopTestSpecifics(randomColor)));
-        flows.add(new TestFlow(this, new ColorNamesSpecifics(randomColor)));
+        flows.add(new TestFlow(this, new StroopTestSpecifics(randomColor, getString(R.string.stroop_instructions))));
+        flows.add(new TestFlow(this, new ColorNamesSpecifics(randomColor, getString(R.string.color_names_instructions))));
         flow = new AppFlow(this, flows);
         setContentView(R.layout.activity_main);
         initialExplanationButton = findViewById(R.id.initial_explanation_button);
@@ -102,6 +102,7 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
         tv.setVisibility(View.VISIBLE);
         tv.setText(instructions);
         initialExplanationButton.setVisibility(View.VISIBLE);
+        initialExplanationButton.setEnabled(true);
         initialExplanationButton.setOnClickListener(v -> flow.instructionsRead());
     }
 

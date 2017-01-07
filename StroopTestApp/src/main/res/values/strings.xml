@@ -13,4 +13,6 @@
     <string name="red">red</string>
     <string name="trial_instruction">Click the button that matches the color of this word:</string>
     <string name="start_test_button">Start</string>
+    <string name="stroop_instructions">להלן מילים בצבעים</string>
+    <string name="color_names_instructions">להלן שמות צבעים</string>
 </resources>
