@@ -66,8 +66,7 @@ public class StroopTestFlowTest {
     public void shouldListenToClicks() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         when(ui.getClicks()).thenReturn(PublishSubject.create());
-        StroopTestFlow test = new StroopTestFlow(ui, mock(RandomColor.class));
-        test.start();
+        new StroopTestFlow(ui, mock(RandomColor.class));
         verify(ui, times(1)).getClicks();
     }
 
@@ -122,7 +121,7 @@ public class StroopTestFlowTest {
     }
 
     @Test
-    public void shouldCountIncorrect1() {
+    public void shouldStatIncorrect1() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
@@ -138,7 +137,7 @@ public class StroopTestFlowTest {
     }
 
     @Test
-    public void shouldCountIncorrect2() {
+    public void shouldStatIncorrect2() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
@@ -155,7 +154,7 @@ public class StroopTestFlowTest {
     }
 
     @Test
-    public void shouldCountIncorrect0() {
+    public void shouldStatIncorrect0() {
         StroopTestFlowUI ui = mock(StroopTestFlowUI.class);
         PublishSubject<Color> clicks = PublishSubject.create();
         when(ui.getClicks()).thenReturn(clicks);
