@@ -1,20 +1,15 @@
 <resources>
     <string name="app_name">Stroop Test</string>
     <string name="app_launcher_name">Stroop Test</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="intro_explanation">In this task, you will be presented with a series of color words (black, blue, yellow, green, red)...</string>
-    <string name="summary">Most people respond faster and more accurately to the congruent trials...</string>
-    <string name="correct">correct</string>
-    <string name="incorrect">incorrect</string>
-    <string name="black">black</string>
-    <string name="blue">blue</string>
-    <string name="yellow">yellow</string>
-    <string name="green">green</string>
-    <string name="red">red</string>
-    <string name="trial_instruction">Click the button that matches the color of this word:</string>
-    <string name="start_test_button">Start</string>
-    <string name="stroop_instructions">להלן מילים בצבעים</string>
-    <string name="color_names_instructions">להלן שמות צבעים</string>
-    <string name="colored_rectangles_instructions">לפניך צבעים</string>
+    <string name="intro_explanation">לפניך מספר מבחנים בהם תתבקש להקיש על כפתורים המתאימים לצבעים</string>
+    <string name="correct">נכון</string>
+    <string name="incorrect">לא נכון</string>
+    <string name="trial_instruction">הקש על הכפתור המתאים לצבע של המילה הבאה:</string>
+    <string name="start_test_button">התחל</string>
+    <string name="stroop_instructions">לפניך מילים של צבעים אך לא תמיד משמעות המילה תואמת לצבע. עליך להקיש לפי צבע המילה.\nלדוגמא <![CDATA[<b><font color=#0000FF>אדום</b>]]> - עליך ללחוץ על המקש הכחול.</string>
+    <string name="color_names_instructions">לפניך מילים של צבעים. הקש על הצבע המתאים למילה.</string>
+    <string name="colored_rectangles_instructions">לפניך צבעים. הקש על אותו צבע בדיוק.</string>
     <string name="share_using">share using</string>
+    <string name="send">שלח</string>
+    <string name="restart">הפעלה מחדש</string>
 </resources>

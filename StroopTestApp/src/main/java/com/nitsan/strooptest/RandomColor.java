@@ -3,7 +3,8 @@ package com.nitsan.strooptest;
 import java.util.Random;
 
 class RandomColor {
-    private static final Color[] colors = new Color[]{Black.get(),
+    private static final Color[] colors = new Color[]{
+            Black.get(),
             Blue.get(),
             Red.get(),
             Green.get(),
@@ -15,7 +16,7 @@ class RandomColor {
     }
 
     Color next() {
-        return colors[random.nextInt(Color.NUM_OF_COLORS)];
+        return colors[random.nextInt(colors.length)];
     }
 
 }

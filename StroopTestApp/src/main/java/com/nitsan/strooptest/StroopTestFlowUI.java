@@ -5,7 +5,7 @@ import android.support.annotation.ColorInt;
 import rx.Observable;
 
 interface StroopTestFlowUI {
-    void showLabel(Label label);
+    void showLabel(Label label, boolean showTrialInstructions);
 
     Observable<Color> getClicks();
 

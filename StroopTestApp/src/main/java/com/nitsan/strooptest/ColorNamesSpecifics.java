@@ -26,11 +26,12 @@ final class ColorNamesSpecifics implements TestSpecifics {
 
     @Override
     public void showLabel(StroopTestFlowUI ui, Label label) {
-        ui.showLabel(label);
+        ui.showLabel(label, false);
     }
 
     @Override
     public String testName() {
         return "Color Names";
     }
+
 }

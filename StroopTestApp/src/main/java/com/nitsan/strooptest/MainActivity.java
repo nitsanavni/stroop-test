@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -97,8 +98,8 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     }
 
     @Override
-    public void showLabel(Label label) {
-        findViewById(R.id.trial_instructions).setVisibility(View.VISIBLE);
+    public void showLabel(Label label, boolean showTrialInstructions) {
+        findViewById(R.id.trial_instructions).setVisibility(showTrialInstructions ? View.VISIBLE : View.GONE);
         findViewById(R.id.label).setVisibility(View.VISIBLE);
         findViewById(R.id.mini_celebration).setVisibility(View.GONE);
         findViewById(R.id.colorButtons).setVisibility(View.VISIBLE);
@@ -136,7 +137,7 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
         findViewById(R.id.mini_celebration).setVisibility(View.GONE);
         TextView tv = (TextView) findViewById(R.id.intro_explanation);
         tv.setVisibility(View.VISIBLE);
-        tv.setText(instructions);
+        tv.setText(Html.fromHtml(instructions));
         initialExplanationButton.setVisibility(View.VISIBLE);
         initialExplanationButton.setEnabled(true);
         initialExplanationButton.setOnClickListener(v -> flow.instructionsRead());
@@ -144,12 +145,12 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
 
     @Override
     public void showColoredRectangle(@ColorInt int color) {
-        findViewById(R.id.trial_instructions).setVisibility(View.VISIBLE);
+        findViewById(R.id.trial_instructions).setVisibility(View.GONE);
         findViewById(R.id.label).setVisibility(View.VISIBLE);
         findViewById(R.id.mini_celebration).setVisibility(View.GONE);
         findViewById(R.id.colorButtons).setVisibility(View.VISIBLE);
         TextView labelTV = (TextView) findViewById(R.id.label);
-        labelTV.setText("    ");
+        labelTV.setText("        ");
         labelTV.setBackgroundColor(color);
     }
 

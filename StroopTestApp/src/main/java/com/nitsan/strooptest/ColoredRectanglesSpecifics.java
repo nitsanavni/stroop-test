@@ -33,4 +33,5 @@ class ColoredRectanglesSpecifics implements TestSpecifics {
     public String testName() {
         return "Colors";
     }
+
 }

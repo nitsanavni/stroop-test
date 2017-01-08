@@ -26,11 +26,12 @@ final class StroopTestSpecifics implements TestSpecifics {
 
     @Override
     public void showLabel(StroopTestFlowUI ui, Label label) {
-        ui.showLabel(label);
+        ui.showLabel(label, true);
     }
 
     @Override
     public String testName() {
         return "Stroop";
     }
+
 }

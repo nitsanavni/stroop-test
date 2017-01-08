@@ -10,19 +10,27 @@
         android:id="@+id/summary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="18dp"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/intro_explanation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/intro_explanation" />
+        android:layout_above="@+id/initial_explanation_button"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:padding="30dp"
+        android:text="@string/intro_explanation"
+        android:textColor="@android:color/black"
+        android:textSize="18dp" />
 
     <Button
         android:id="@+id/initial_explanation_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:text="@string/start_test_button"
         android:visibility="gone" />
@@ -110,7 +118,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/restart"
-        android:text="send"
+        android:layout_centerHorizontal="true"
+        android:text="@string/send"
         android:visibility="gone" />
 
     <Button
@@ -119,7 +128,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="restart"
+        android:layout_margin="10dp"
+        android:text="@string/restart"
         android:visibility="gone" />
 
 </RelativeLayout>

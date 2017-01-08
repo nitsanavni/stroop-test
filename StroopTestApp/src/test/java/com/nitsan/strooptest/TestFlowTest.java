@@ -20,6 +20,7 @@ import rx.subjects.PublishSubject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -116,7 +117,7 @@ public class TestFlowTest {
         TestSubscriber<Object> testSubscriber = new TestSubscriber<>();
         test.end().subscribe(testSubscriber);
         test.start();
-        verify(ui, times(0)).showLabel(any(Label.class));
+        verify(ui, times(0)).showLabel(any(Label.class), anyBoolean());
         verify(ui, times(1)).showTestInstructions(any(TestFlow.class), anyString());
     }
 
