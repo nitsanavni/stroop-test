@@ -40,7 +40,9 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
         initialExplanationSubject = PublishSubject.create();
         initialExplanationButton.setEnabled(true);
         initialExplanationButton.setVisibility(View.VISIBLE);
-        findViewById(R.id.intro_explanation).setVisibility(View.VISIBLE);
+        TextView tv = (TextView) findViewById(R.id.intro_explanation);
+        tv.setVisibility(View.VISIBLE);
+        tv.setText(R.string.intro_explanation);
         initialExplanationButton.setOnClickListener(v -> {
             initialExplanationButton.setEnabled(false);
             initialExplanationSubject.onNext(new Object());

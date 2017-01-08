@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Stroop Test</string>
     <string name="app_launcher_name">Stroop Test</string>
-    <string name="intro_explanation">לפניך מספר מבחנים בהם תתבקש להקיש על כפתורים המתאימים לצבעים</string>
+    <string name="intro_explanation">לפניך מספר מבחנים בהם תתבקש להקיש על כפתורים המתאימים לצבעים.</string>
     <string name="correct">נכון</string>
     <string name="incorrect">לא נכון</string>
     <string name="trial_instruction">הקש על הכפתור המתאים לצבע של המילה הבאה:</string>
