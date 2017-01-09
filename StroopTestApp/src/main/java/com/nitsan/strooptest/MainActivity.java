@@ -61,7 +61,6 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
         findViewById(R.id.colorButtons).setVisibility(View.GONE);
         findViewById(R.id.label).setVisibility(View.GONE);
         findViewById(R.id.trial_instructions).setVisibility(View.GONE);
-        findViewById(R.id.mini_celebration).setVisibility(View.GONE);
         View email = findViewById(R.id.email_stats_button);
         email.setVisibility(View.VISIBLE);
         email.setOnClickListener(v -> share(summary));
@@ -103,7 +102,6 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     public void showLabel(Label label, boolean showTrialInstructions) {
         findViewById(R.id.trial_instructions).setVisibility(showTrialInstructions ? View.VISIBLE : View.GONE);
         findViewById(R.id.label).setVisibility(View.VISIBLE);
-        findViewById(R.id.mini_celebration).setVisibility(View.GONE);
         findViewById(R.id.colorButtons).setVisibility(View.VISIBLE);
         TextView labelTV = (TextView) findViewById(R.id.label);
         labelTV.setText(label.text());
@@ -127,16 +125,13 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     @Override
     public void correct(boolean correct) {
         findViewById(R.id.label).setVisibility(View.INVISIBLE);
-        findViewById(R.id.trial_instructions).setVisibility(View.INVISIBLE);
-        findViewById(R.id.colorButtons).setVisibility(View.INVISIBLE);
-        TextView celebration = (TextView) findViewById(R.id.mini_celebration);
-        celebration.setVisibility(View.VISIBLE);
-        celebration.setText(correct ? R.string.correct : R.string.incorrect);
     }
 
     @Override
     public void showTestInstructions(TestFlow flow, String instructions) {
-        findViewById(R.id.mini_celebration).setVisibility(View.GONE);
+        findViewById(R.id.label).setVisibility(View.INVISIBLE);
+        findViewById(R.id.colorButtons).setVisibility(View.INVISIBLE);
+        findViewById(R.id.trial_instructions).setVisibility(View.INVISIBLE);
         TextView tv = (TextView) findViewById(R.id.intro_explanation);
         tv.setVisibility(View.VISIBLE);
         tv.setText(Html.fromHtml(instructions));
@@ -149,7 +144,6 @@ public class MainActivity extends Activity implements UI, StroopTestFlowUI {
     public void showColoredRectangle(@ColorInt int color) {
         findViewById(R.id.trial_instructions).setVisibility(View.GONE);
         findViewById(R.id.label).setVisibility(View.VISIBLE);
-        findViewById(R.id.mini_celebration).setVisibility(View.GONE);
         findViewById(R.id.colorButtons).setVisibility(View.VISIBLE);
         TextView labelTV = (TextView) findViewById(R.id.label);
         labelTV.setText("        ");

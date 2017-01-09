@@ -56,7 +56,7 @@ class TestFlow {
             Observable
                     .just(0)
                     .subscribeOn(Schedulers.immediate())
-                    .delay(300, TimeUnit.MILLISECONDS, Schedulers.computation())
+                    .delay(100, TimeUnit.MILLISECONDS, Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(i -> {
                         if (enough()) {
